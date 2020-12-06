@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="pl">
+  <head>
+    <title>XtraSmallFramework - demo</title>
+    <meta charset="utf-8">
+    <meta name="description" content="XtraSmallFramework - demo">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- this needs to be loaded before guide's inline scripts -->
+    <script src="xsframework.js"></script>
+    
+    <style>
+      .red  {color:red;}
+      .blue {color:blue;}
+    </style>    
+  </head>
+
+
+
+<body>
+    <h1>XtraSmallFramework - demo</h1>
+  
+    <p class="isVisible">Some paragraph</p>
+    <button onclick="toggle();">Toggle me!</button>
+    <br />
+
+    <p>
+        <span class="myMotleyElement">Some paragraph</span>
+        <button onclick="toggleColor();">Toggle color!</button>
+    </p>
+    <br />
+    
+    <input type="text" id="inputValue" name="exampleInput" oninput="inputChanged();" />
+    <p id="info1">{{ inputValue }}</p>
+    <p id="info2">{{ inputUpper }}</p>
+    
+    
+  <script>
+    var xs = newXtraSmallFramework()
+        .define({
+            '.isVisible': function(xs, element, value, i) {
+                element.style.display = value? 'block' : 'none';
+            },
+            '.myMotleyElement': function(xs, element, value, i) {
+                if (value) {
+                    element.classList.add("red");
+                    element.classList.remove("blue");
+                } else {
+                    element.classList.add("blue");
+                    element.classList.remove("red");
+                }
+                //xs.etc.addRemoveClasses(element, value, ['red'], ['blue']);
+            }
+        })
+        .update([
+            '.isVisible', true,
+            '.myMotleyElement', true
+        ]);
+        
+    function inputChanged() {
+        xs.update([
+            '#info1.innerText', "Entered value is '" + xs.inputValue.value + "'",
+            '#info2.innerText', "Type a number to learn something more"
+          ]);
+    }
+
+    inputChanged();    
+
+    function toggleColor() {
+        xs.update([
+            '.myMotleyElement', !xs.prop('.myMotleyElement')
+          ]);
+    }
+    function toggle() {
+        xs.update([
+            '.isVisible', !xs.prop('.isVisible')
+          ]);
+    }
+  </script>
+</body>
