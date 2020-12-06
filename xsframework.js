@@ -2,6 +2,8 @@
     This code works for:
     * ECMAScript 5
     * IE >= 9 and all modern browsers
+    Licence: Public Domain, Unlicense (https://choosealicense.com/licenses/unlicense/), WTFPL (http://www.wtfpl.net/)
+            Feel free to download, copy, modify and use this software in any way you want (commercial or uncommercial).
 */
 function newXtraSmallFramework() {
     function each(x, action) {
