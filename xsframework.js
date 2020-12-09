@@ -4,6 +4,7 @@
     * IE >= 9 and all modern browsers
     Licence: Public Domain, Unlicense (https://choosealicense.com/licenses/unlicense/), WTFPL (http://www.wtfpl.net/)
             Feel free to download, copy, modify and use this software in any way you want (commercial or uncommercial).
+     https://github.com/darekp7/xsframework
 */
 function newXtraSmallFramework() {
     function each(x, action) {
@@ -30,11 +31,11 @@ function newXtraSmallFramework() {
             for (var key in x) {
                 if (x.hasOwnProperty(key)) {
                     action(x[key], key, x);
-                } 
+                }
             }
         }
     }
-    
+
     function isIdentifier(str) {
         str = (str || '').toUpperCase();
         if (str.length <= 0)
@@ -58,7 +59,7 @@ function newXtraSmallFramework() {
         var pos = str.indexOf('.');
         return str.indexOf(' ') < 0 && str[0] == '#' && pos > 2 && pos == str.lastIndexOf('.') && isIdentifier(str.substring(pos + 1));
     }
-    
+
     var xs = {
         etc: {
             data: {
@@ -69,15 +70,15 @@ function newXtraSmallFramework() {
             elementIds: []
         }
     };
-    
-    
+
+
     function define(propDefinitions) {
         each(propDefinitions, function (action, key) {
             xs.etc.definedProperties[key] = action;
         });
         return xs;
     }
-    
+
     function setProp(key, value) {
         key = key || '';
         var action = xs.etc.definedProperties[key] || function() { throw new Error("Undefined property: '" + key + "'."); }
@@ -113,7 +114,7 @@ function newXtraSmallFramework() {
         }
         return xs;
     }
-    
+
     function prop(key, value) {
         switch(arguments.length) {
             case 1:
@@ -135,11 +136,11 @@ function newXtraSmallFramework() {
         }
         return xs;
     }
-    
+
     function eachElement(cssSelectors, action) {
         var elements = document.documentElement.querySelectorAll(cssSelectors);
         for(var i = 0; i < elements.length; i++) {
-            action(xs, elements[i], value, i, elements.length);
+            action(elements[i], i, elements.length);
         }
     }
 
@@ -159,7 +160,7 @@ function newXtraSmallFramework() {
         }
         return xs;
     }
-    
+
     xs.html = document.documentElement;
     xs.define = define;
     xs.prop = prop;
@@ -169,19 +170,19 @@ function newXtraSmallFramework() {
     xs.etc.refreshElements = refreshElements;
     xs.etc.isIdentifier = isIdentifier;
     xs.etc.isElementPropertyName = isElementPropertyName;
-    
+
     each(xs, function(v, k) {  // reserverd ids are sorted in order to avoid of ambiguity
         for(var i=0; i < xs.etc.reservedIds.length; i++) {
             if (xs.etc.reservedIds[i] > k) {
                 xs.etc.reservedIds.splice(i, 0, k);
                 return;
             }
-        }            
+        }
         xs.etc.reservedIds.push(k);
     });
-    
+
     xs.etc.refreshElements();
-    
+
     xs.define({
         '#*.innerText': function(xs, element, value) {
             element.innerText = value;
