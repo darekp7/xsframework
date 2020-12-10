@@ -94,7 +94,7 @@ function newXtraSmallFramework() {
                     action(xs, element, value);
                 } else {
                     var default_property_key = "#*" + key.substring(key.indexOf('.'));
-                    if (xs.etc.definedProperties[default_property_key]) {
+                    if (default_property_key !== key && xs.etc.definedProperties[default_property_key]) {
                         action = xs.etc.definedProperties[default_property_key];
                         action(xs, element, value);
                     } else {
@@ -161,15 +161,49 @@ function newXtraSmallFramework() {
         return xs;
     }
 
+    function get_IE_version() {
+        // https://www.codegrepper.com/code-examples/javascript/javascript+check+if+browser+is+ie
+        var ua = window.navigator.userAgent;
+        var msie = ua.indexOf('MSIE ');
+        if (msie > 0) {
+            // IE 10 or older => return version number
+            return parseInt(ua.substring(msie + 5, ua.indexOf('.', msie)), 10);
+        }
+
+        var ua = window.navigator.userAgent;
+        var trident = ua.indexOf('Trident/');
+        if (trident > 0) {
+            // IE 11 => return version number
+            var rv = ua.indexOf('rv:');
+            return parseInt(ua.substring(rv + 3, ua.indexOf('.', rv)), 10);
+        }
+        return 0;
+    }
+
+    function get_Edge_version() {
+        // https://www.codegrepper.com/code-examples/javascript/javascript+check+if+browser+is+ie
+        var ua = window.navigator.userAgent;
+        var edge = ua.indexOf('Edge/');
+        if (edge > 0) {
+            // Edge (IE 12+) => return version number
+            return parseInt(ua.substring(edge + 5, ua.indexOf('.', edge)), 10);
+        }
+        return 0;
+    }
+
     xs.html = document.documentElement;
     xs.define = define;
     xs.prop = prop;
     xs.update = update;
     xs.eachElement = eachElement;
+    xs.isIE = !!get_IE_version();
+    xs.isEdge = !!get_Edge_version();
     xs.etc.each = each;
     xs.etc.refreshElements = refreshElements;
     xs.etc.isIdentifier = isIdentifier;
     xs.etc.isElementPropertyName = isElementPropertyName;
+    xs.etc.get_IE_version = get_IE_version;
+    xs.etc.get_Edge_version = get_Edge_version;
 
     each(xs, function(v, k) {  // reserverd ids are sorted in order to avoid of ambiguity
         for(var i=0; i < xs.etc.reservedIds.length; i++) {
