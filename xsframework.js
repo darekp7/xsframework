@@ -6,7 +6,11 @@
             Feel free to download, copy, modify and use this software in any way you want (commercial or uncommercial).
      https://github.com/darekp7/xsframework
 */
-function newXtraSmallFramework() {
+function newXtraSmallFramework(bAddElementsList) {
+    if (arguments.length < 1 || bAddElementsList === undefined) {
+        bAddElementsList = true;
+    }
+    
     function each(x, action) {
         if (!x) {
             return;
@@ -38,10 +42,10 @@ function newXtraSmallFramework() {
 
     function isIdentifier(str) {
         str = (str || '').toUpperCase();
-        if (str.length <= 0)
+        if (str.length <= 0 || str[0] >= '0' && str[0] <= '9')
             return false;
         for(var i=0; i < str.length; i++) {
-            if (str[i] != '_' && (str[i] < '0' || str[i] > '9') && (str[i] < 'A' || str[i] > 'Z'))
+            if ("~`!@#%^&*()-_+=|\\[]{};:'\",.<>/?".indexOf(str[i]) >= 0 || !str[i].trim())
                 return false;
         }
         return true;
@@ -144,19 +148,29 @@ function newXtraSmallFramework() {
         }
     }
 
-    function refreshElements() {
+    /* adds new elements to object if they exist
+       note: if you need refresh them (delete erased elements and add new) just create new XS object
+    */
+    function updateElementsList() {
+        if (!bAddElementsList) {
+            return xs;
+        }
         var elements = document.documentElement.querySelectorAll('[id]');
-        each(xs.etc.elementIds, function(id) {
-            xs[id] = undefined;
-        });
-        xs.etc.elementIds = [];
         for(var i = 0; i < elements.length; i++) {
-            var element = elements[i];
-            var id = element.id;
-            if(xs.etc.reservedIds.indexOf(id) <= 0 && !xs[id]) {
-                xs[id] = element;
-                xs.etc.elementIds.push(id);
-            }
+            // note:
+            // "id" must be here a local variable in order to make proper variable scope => I (have to) use anonymous function,
+            // I use "isIdentifier" because other ids cannot be accessed by dot notation (x.property),
+            // if there are more than one element with specified "id" I use first one.
+            (function (id) {
+                if (isIdentifier(id) && xs.etc.reservedIds.indexOf(id) <= 0 && xs[id] === undefined) {
+                    Object.defineProperty(xs, id, {
+                        get: function () {
+                            return document.getElementById(id);
+                        }
+                    });
+                    xs.etc.elementIds.push(id);
+                }
+            })(elements[i].id);
         }
         return xs;
     }
@@ -199,7 +213,7 @@ function newXtraSmallFramework() {
     xs.isIE = !!get_IE_version();
     xs.isEdge = !!get_Edge_version();
     xs.etc.each = each;
-    xs.etc.refreshElements = refreshElements;
+    xs.etc.updateElementsList = updateElementsList;
     xs.etc.isIdentifier = isIdentifier;
     xs.etc.isElementPropertyName = isElementPropertyName;
     xs.etc.get_IE_version = get_IE_version;
@@ -215,7 +229,7 @@ function newXtraSmallFramework() {
         xs.etc.reservedIds.push(k);
     });
 
-    xs.etc.refreshElements();
+    xs.etc.updateElementsList();
 
     xs.define({
         '#*.innerText': function(xs, element, value) {

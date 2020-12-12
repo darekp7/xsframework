@@ -17,7 +17,7 @@
 
 
 
-<body>
+<body onload="onloadFun()">
     <h1>XtraSmallFramework - demo</h1>
   
     <p class="isVisible">Some paragraph</p>
@@ -64,8 +64,6 @@
           ]);
     }
 
-    inputChanged();    
-
     function toggleColor() {
         xs.update([
             '.myMotleyElement', !xs.prop('.myMotleyElement')
@@ -75,6 +73,10 @@
         xs.update([
             '.isVisible', !xs.prop('.isVisible')
           ]);
+    }
+    
+    function onloadFun() {
+        inputChanged();    
     }
   </script>
 </body>
