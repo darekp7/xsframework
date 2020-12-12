@@ -42,7 +42,7 @@ function newXtraSmallFramework(bAddElementsList) {
 
     function isIdentifier(str) {
         str = (str || '').toUpperCase();
-        if (str.length <= 0 || str[0] >= '0' && str[0] <= '9')
+        if (str.length <= 0 || '0123456789'.indexOf(str[0]) >= 0)
             return false;
         for(var i=0; i < str.length; i++) {
             if ("~`!@#%^&*()-_+=|\\[]{};:'\",.<>/?".indexOf(str[i]) >= 0 || !str[i].trim())
