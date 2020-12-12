@@ -45,7 +45,7 @@ function newXtraSmallFramework(bAddElementsList) {
         if (str.length <= 0 || '0123456789'.indexOf(str[0]) >= 0)
             return false;
         for(var i=0; i < str.length; i++) {
-            if ("~`!@#%^&*()-_+=|\\[]{};:'\",.<>/?".indexOf(str[i]) >= 0 || !str[i].trim())
+            if ("~`!@#%^&*()-+=|\\[]{};:'\",.<>/?".indexOf(str[i]) >= 0 || !str[i].trim())
                 return false;
         }
         return true;
@@ -152,9 +152,6 @@ function newXtraSmallFramework(bAddElementsList) {
        note: if you need refresh them (delete erased elements and add new) just create new XS object
     */
     function updateElementsList() {
-        if (!bAddElementsList) {
-            return xs;
-        }
         var elements = document.documentElement.querySelectorAll('[id]');
         for(var i = 0; i < elements.length; i++) {
             // note:
@@ -229,7 +226,9 @@ function newXtraSmallFramework(bAddElementsList) {
         xs.etc.reservedIds.push(k);
     });
 
-    xs.etc.updateElementsList();
+    if (bAddElementsList) {
+        xs.etc.updateElementsList();
+    }
 
     xs.define({
         '#*.innerText': function(xs, element, value) {
