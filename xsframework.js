@@ -52,7 +52,7 @@ function newXtraSmallFramework(bAddElementsList) {
     }
     
     function strReplaceAll(str, find, newValue) {
-        if (find && find !== replace) {
+        if (find && find !== newValue) {
             while(str.indexOf(find) >= 0) {
                 str = str.replace(find, newValue);
             }
