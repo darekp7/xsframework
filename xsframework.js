@@ -50,7 +50,23 @@ function newXtraSmallFramework(bAddElementsList) {
         }
         return true;
     }
-
+    
+    function strReplaceAll(str, find, newValue) {
+        if (find && find !== replace) {
+            while(str.indexOf(find) >= 0) {
+                str = str.replace(find, newValue);
+            }
+        }
+        return str;
+    }
+    
+    function pipe(val) {
+        var res = val;
+        for(var i = 1; i < arguments.length; i++)
+            res = arguments[i](res);
+        return res;
+    }
+    
     function isElementPropertyName(str) {
         // element property name format: "#ident.property"
         // where:
@@ -212,6 +228,8 @@ function newXtraSmallFramework(bAddElementsList) {
     xs.etc.each = each;
     xs.etc.updateElementsList = updateElementsList;
     xs.etc.isIdentifier = isIdentifier;
+    xs.etc.strReplaceAll = strReplaceAll;
+    xs.etc.pipe = pipe;
     xs.etc.isElementPropertyName = isElementPropertyName;
     xs.etc.get_IE_version = get_IE_version;
     xs.etc.get_Edge_version = get_Edge_version;
