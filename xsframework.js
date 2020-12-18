@@ -2,15 +2,18 @@
     This code works for:
     * ECMAScript 5
     * IE >= 9 and all modern browsers
-    Licence: Public Domain, Unlicense (https://choosealicense.com/licenses/unlicense/), WTFPL (http://www.wtfpl.net/)
-            Feel free to download, copy, modify and use this software in any way you want (commercial or uncommercial).
-     https://github.com/darekp7/xsframework
+
+    Licence:
+        Public Domain, Unlicense (https://choosealicense.com/licenses/unlicense/), WTFPL (http://www.wtfpl.net/)
+        Feel free to download, copy, modify and use this software in any way you want (commercial or uncommercial).
+
+    https://github.com/darekp7/xsframework
 */
-function newXtraSmallFramework(bAddElementsList) {
-    if (arguments.length < 1 || bAddElementsList === undefined) {
-        bAddElementsList = true;
+function newXtraSmallFramework(bCreateElementsList) {
+    if (arguments.length < 1 || bCreateElementsList === undefined) {
+        bCreateElementsList = true;
     }
-    
+
     function each(x, action) {
         if (!x) {
             return;
@@ -50,7 +53,7 @@ function newXtraSmallFramework(bAddElementsList) {
         }
         return true;
     }
-    
+
     function strReplaceAll(str, find, newValue) {
         if (find && find !== newValue) {
             while(str.indexOf(find) >= 0) {
@@ -59,14 +62,14 @@ function newXtraSmallFramework(bAddElementsList) {
         }
         return str;
     }
-    
+
     function pipe(val) {
         var res = val;
         for(var i = 1; i < arguments.length; i++)
             res = arguments[i](res);
         return res;
     }
-    
+
     function isElementPropertyName(str) {
         // element property name format: "#ident.property"
         // where:
@@ -244,7 +247,7 @@ function newXtraSmallFramework(bAddElementsList) {
         xs.etc.reservedIds.push(k);
     });
 
-    if (bAddElementsList) {
+    if (bCreateElementsList) {
         xs.etc.updateElementsList();
     }
 
