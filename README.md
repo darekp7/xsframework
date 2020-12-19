@@ -66,7 +66,7 @@ Moreover, you can define default setter for all elements passing the star (`*`) 
     })
 ```
 
-The framework when executes setter, first tries to execute function defined for `#myId.color`, if it doesn't find suc function, it executes the function for `#*.color`
+The framework when executes setter, first tries to execute function defined for `#myId.color`, if it doesn't find such function, it executes the function for `#*.color`
 
 
 
