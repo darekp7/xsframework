@@ -48,6 +48,7 @@ Moreover, the framework allows you to define properties. There are three kinds o
     ]);
 ```
 
+
 ## Defining properties
 
 Only few properties are defined by framework, in most cases you have to define your own properties. Only setters need to be defined, in XS Framework there is no concept of getters, but you can obtain the last set value of ther property by calling xs.prop('name') (single argument call).
@@ -57,17 +58,34 @@ You can define setter for the specific id:
 ```javascript
     xs.define('#myId.color', function(xs, element, value) {
         element.style.backgroundColor = value;
-    })
+    });
 ```
 Moreover, you can define default setter for all elements passing the star (`*`) character instead of id:
 ```javascript
     xs.define('#*.color', function(xs, element, value) {
         element.style.backgroundColor = value;
-    })
+    });
 ```
 
-The framework when executes setter, first tries to execute function defined for `#myId.color`, if it doesn't find such function, it executes the function for `#*.color`
+The framework when executes the setter, first tries to execute function defined for `#myId.color`, if it doesn't find such function, it executes the function for `#*.color`.
 
+### Defining selector properties
+The setter for selector properties is called for every element returned by the seletor and has five arguments:
+```javascript
+    '.isVisible': function(xs, element, value, i, n) {
+        element.style.display = value? 'block' : 'none';
+    },
+```
+The last two arguments are: 
+- `i` - the 0-based index of current element in the selection result, 
+- `n` - the total count of elements in the selection result.
 
+Thanks to them the setter has ability to determine if the current element is first or last and take specific actions for first/last element.
 
-  There is no tutorial at the moment, but you can easily understand basic concepts running demo.html.
+### Defining general properties
+The definition of the setter for general property is a bit similar to the case of the setter for element property, but the second argument is the key (aka name) of the property, not an DOM element:
+```javascript
+    xs.define('totalSum', function(xs, key, value) {
+        element.style.backgroundColor = value;
+    });
+```
