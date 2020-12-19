@@ -86,6 +86,8 @@ Thanks to them the setter has ability to determine if the current element is fir
 The definition of the setter for general property is a bit similar to the case of the setter for element property, but the second argument is the key (aka name) of the property, not an DOM element:
 ```javascript
     xs.define('totalSum', function(xs, key, value) {
-        element.style.backgroundColor = value;
+        var element = document.getElementById('MessagesDiv'); // or shorter: var element = xs.MessagesDiv;
+        element.style.backgroundColor = 'yellow';
+        element.innerText = value.toString();
     });
 ```
