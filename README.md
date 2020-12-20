@@ -10,42 +10,42 @@ Public Domain, Unlicense (https://choosealicense.com/licenses/unlicense/), WTFPL
 Creating new instance of framework object:
 
 ```javascript
-var xs = newXtraSmallFramework();
+ var xs = newXtraSmallFramework();
 ```
 
 After that instead of writing:
 
 ```javascript
-    document.getElementById('myId')
+ document.getElementById('myId')
 ```
 
 you can write more simply:
 
 ```javascript
-    xs.myId
+ xs.myId
 ```
 
 Moreover, the framework allows you to define properties. There are three kinds of properties, all of them you can set by `x.prop("name", value)` and/or `xs.update(["name1", value1, "name2", value2, ...])` methods:
 
 - Element properties have names aka keys of the form `#elementId.attribute` and allow to manipulate a specific DOM element, for example the code below sets the element's inner text:
 ```javascript
-    xs.update([
-        '#myId.innerText', "Hello, world!"
-    ]);
+ xs.update([
+     '#myId.innerText', "Hello, world!"
+ ]);
 ```
 
 - Selector properties have keys being CSS selector and allow to mainipulate elements returned by the selector, for example:
 ```javascript
-    xs.update([
-        '.isVisible', true
-    ]);
+ xs.update([
+     '.isVisible', true
+ ]);
 ```
 
 - General properties have keys being identifiers and allow to do other manipulations:
 ```javascript
-    xs.update([
-        'totalSum', 5 + 3 + 4
-    ]);
+ xs.update([
+     'totalSum', 5 + 3 + 4
+ ]);
 ```
 
 
@@ -56,15 +56,15 @@ Only few properties are defined by framework, in most cases you have to define y
 ### Defining element properties
 You can define setter for the specific id:
 ```javascript
-    xs.define('#myId.color', function(xs, element, value) {
-        element.style.backgroundColor = value;
-    });
+ xs.define('#myId.color', function(xs, element, value) {
+     element.style.backgroundColor = value;
+ });
 ```
 Moreover, you can define default setter for all elements passing the star (`*`) character instead of id:
 ```javascript
-    xs.define('#*.color', function(xs, element, value) {
-        element.style.backgroundColor = value;
-    });
+ xs.define('#*.color', function(xs, element, value) {
+     element.style.backgroundColor = value;
+ });
 ```
 
 The framework when executes the setter, first tries to execute function defined for `#myId.color`, if it doesn't find such function, it executes the function for `#*.color`.
@@ -72,9 +72,9 @@ The framework when executes the setter, first tries to execute function defined 
 ### Defining selector properties
 The setter for selector properties is called for every element returned by the seletor and has five arguments:
 ```javascript
-    '.isVisible': function(xs, element, value, i, n) {
-        element.style.display = value? 'block' : 'none';
-    },
+ '.isVisible': function(xs, element, value, i, n) {
+     element.style.display = value? 'block' : 'none';
+ },
 ```
 The last two arguments are: 
 - `i` - the 0-based index of current element in the selection result, 
@@ -85,9 +85,9 @@ Thanks to them the setter has ability to determine if the current element is fir
 ### Defining general properties
 The definition of the setter for general property is a bit similar to the case of the setter for element property, but the second argument is the key (aka name) of the property, not an DOM element:
 ```javascript
-    xs.define('totalSum', function(xs, key, value) {
-        var element = xs.MessageDiv; //yes, this is the abbreviation of document.getElementById('MessageDiv')
-        element.style.backgroundColor = (value >= 0)? 'yellow' : 'pink';
-        element.innerText = 'The sum is: ' + value.toString();
-    });
+ xs.define('totalSum', function(xs, key, value) {
+     var element = xs.MessageDiv; //yes, this is the abbreviation of document.getElementById('MessageDiv')
+     element.style.backgroundColor = (value >= 0)? 'yellow' : 'pink';
+     element.innerText = 'The sum is: ' + value.toString();
+ });
 ```
