@@ -85,9 +85,8 @@ function newXtraSmallFramework(bCreateElementsList) {
 
     var xs = {
         etc: {
-            data: {
-                __lastErrors: {}
-              },
+            data: {},
+            lastErrors: {},
             definedProperties: {},
             reservedIds: [],
             elementIds: []
@@ -132,7 +131,7 @@ function newXtraSmallFramework(bCreateElementsList) {
             }
             xs.etc.data[key] = value;
         } catch(e) {
-            xs.etc.data.__lastErrors[key] = e;
+            xs.etc.lastErrors[key] = e;
             console.error(e);
         }
         return xs;
