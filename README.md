@@ -87,7 +87,7 @@ The definition of the setter for general property is a bit similar to the case o
 ```javascript
     xs.define('totalSum', function(xs, key, value) {
         var element = document.getElementById('MessagesDiv'); // or shorter: var element = xs.MessagesDiv;
-        element.style.backgroundColor = 'yellow';
+        element.style.backgroundColor = (value >= 0)? 'yellow' : 'pink';
         element.innerText = value.toString();
     });
 ```
