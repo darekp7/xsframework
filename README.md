@@ -80,7 +80,7 @@ The last two arguments are:
 - `i` - the 0-based index of current element in the selection result, 
 - `n` - the total count of elements in the selection result.
 
-Thanks to them the setter has ability to determine if the current element is first or last and take specific actions for first/last element.
+Thanks to them the setter has ability to determine if the current element is first or last and take specific actions for the first/last element.
 
 ### Defining general properties
 The definition of the setter for general property is a bit similar to the case of the setter for element property, but the second argument is the key (aka name) of the property, not an DOM element:
