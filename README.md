@@ -75,7 +75,9 @@ Moreover, you can define default setter for all elements passing the star (`*`) 
  });
 ```
 
-The framework when executes the setter, first tries to execute function defined for specified id, if it doesn't find such function, it executes the function for `#*`. 
+The framework when executes the setter, first tries to execute function defined for specified id, if it doesn't find such function, it executes the function for `#*`. So, the above code set background and text clolor for element `myID` and background color only for other elements.
+
+You can call `xs.define()` more than once, in the case when property key is the same in two definitions, the newer definiton overwrites the older one.
 
 ### Defining selector properties
 The setter for selector properties is called for every element returned by the seletor and has five arguments:
@@ -97,7 +99,7 @@ The definition of the setter for plain property is a bit similar to the case of 
 ```javascript
  xs.define({
     'totalSum': function(xs, key, value) {
-        var element = xs.MessageDiv; //yes, this is the abbreviation of document.getElementById('MessageDiv')
+        var element = xs.InfoDiv; //yes, this is the abbreviation of document.getElementById('InfoDiv')
         element.style.backgroundColor = (value >= 0)? 'yellow' : 'pink';
         element.innerText = 'The sum is: ' + value.toString();
     }
@@ -105,7 +107,7 @@ The definition of the setter for plain property is a bit similar to the case of 
 ```
 
 ### Defining several properties with the same behaviour
-If you want to define more than one property with the same setter function, put all keys in `define()` first argument separatede by semicolon (`;`):
+If you want to define more than one property with the same setter function, separate keys by semicolon (`;`):
 ```javascript
  xs.define({
     ".visible_if_first_check_pressed; .visible_if_second_check_pressed; .visible_if_third_check_pressed": 
