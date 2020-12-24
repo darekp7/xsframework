@@ -56,25 +56,35 @@ Only few properties are defined by framework, in most cases you have to define p
 ### Defining element properties
 You can define setter for the specific id:
 ```javascript
- xs.define('#myId.color', function(xs, element, value) {
-     element.style.backgroundColor = value;
+ xs.define({
+    '#myId.color': function(xs, element, value) {
+        element.style.backgroundColor = value;
+    }
  });
 ```
 Moreover, you can define default setter for all elements passing the star (`*`) character instead of id:
 ```javascript
- xs.define('#*.color', function(xs, element, value) {
-     element.style.backgroundColor = value;
+ xs.define({
+    '#myId.color': function(xs, element, value) {
+        element.style.backgroundColor = value;
+        element.style.color = 'blue';
+    },
+    '#*.color': function(xs, element, value) {
+        element.style.backgroundColor = value;
+    }
  });
 ```
 
-The framework when executes the setter, first tries to execute function defined for `#myId.color`, if it doesn't find such function, it executes the function for `#*.color`.
+The framework when executes the setter, first tries to execute function defined for specified id, if it doesn't find such function, it executes the function for `#*`. 
 
 ### Defining selector properties
 The setter for selector properties is called for every element returned by the seletor and has five arguments:
 ```javascript
- '.isVisible': function(xs, element, value, i, n) {
-     element.style.display = value? 'block' : 'none';
- },
+ xs.define({
+    '.isVisible': function(xs, element, value, i, n) {
+        element.style.display = value? 'block' : 'none';
+    }
+ });
 ```
 The last two arguments are: 
 - `i` - the 0-based index of current element in the selection result, 
@@ -85,12 +95,22 @@ Thanks to them the setter has ability to determine if the current element is fir
 ### Defining plain properties
 The definition of the setter for plain property is a bit similar to the case of the setter for element property, but the second argument is the key (aka name) of the property, not an DOM element:
 ```javascript
- xs.define('totalSum', function(xs, key, value) {
-     var element = xs.MessageDiv; //yes, this is the abbreviation of document.getElementById('MessageDiv')
-     element.style.backgroundColor = (value >= 0)? 'yellow' : 'pink';
-     element.innerText = 'The sum is: ' + value.toString();
+ xs.define({
+    'totalSum': function(xs, key, value) {
+        var element = xs.MessageDiv; //yes, this is the abbreviation of document.getElementById('MessageDiv')
+        element.style.backgroundColor = (value >= 0)? 'yellow' : 'pink';
+        element.innerText = 'The sum is: ' + value.toString();
+    }
  });
 ```
 
-### Defining several properties with the same setter function
-
+### Defining several properties with the same behaviour
+If you want to define more than one property with the same setter function, put all keys in `define()` first argument separatede by semicolon (`;`):
+```javascript
+ xs.define({
+    ".visible_if_first_check_pressed; .visible_if_second_check_pressed; .visible_if_third_check_pressed": 
+        function(xs, element, value, i, n) {
+            element.style.display = value? 'block' : 'none';
+        }
+ });
+```
