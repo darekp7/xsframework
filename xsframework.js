@@ -96,7 +96,18 @@ function newXtraSmallFramework(bCreateElementsList) {
 
     function define(propDefinitions) {
         each(propDefinitions, function (action, key) {
-            xs.etc.definedProperties[key] = action;
+            if (key && typeof key === "string" && key.trim()) {
+                if (key.indexOf(';') < 0)
+                    xs.etc.definedProperties[key] = action;
+                else {  // treat "key" as a list of keys separated by semicolon
+                    var keys = key.split(';');
+                    for(var i=0; i < keys.length; i++) {
+                        var kk = keys[i].trim();
+                        if (kk)
+                            xs.etc.definedProperties[kk] = action;
+                    }
+                }
+            }
         });
         return xs;
     }

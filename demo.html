@@ -58,9 +58,18 @@
         ]);
         
     function inputChanged() {
+        function startsWithNumber(s) {
+            var digits = "0123456789";
+            return digits.indexOf(s[0]) >= 0 || s[0] === '-' && digits.indexOf(s[1]) >= 0;
+        }
+        var val = xs.inputValue.value.trim();
         xs.update([
-            '#info1.innerText', "Entered value is '" + xs.inputValue.value + "'",
-            '#info2.innerText', "Type a number to learn something more"
+            '#info1.innerText', "Entered value is '" + xs.inputValue.value + "'.",
+            '#info2.innerText', !startsWithNumber(val)
+                                ? "Type in a number to learn something more."
+                                : (parseFloat(val) >= 100)
+                                    ? "The number is greater or equal to 100."
+                                    : "The number is less than 100."
           ]);
     }
 

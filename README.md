@@ -41,7 +41,7 @@ Moreover, the framework allows you to define properties. There are three kinds o
  ]);
 ```
 
-- General properties have keys being identifiers and allow to do other manipulations:
+- Plain properties have keys being identifiers and allow to do other manipulations:
 ```javascript
  xs.update([
      'totalSum', 5 + 3 + 4
@@ -51,7 +51,7 @@ Moreover, the framework allows you to define properties. There are three kinds o
 
 ## Defining properties
 
-Only few properties are defined by framework, in most cases you have to define your own properties. Only setters need to be defined, in XS Framework there is no concept of getters, but you can obtain the last set value of ther property by calling xs.prop('name') (single argument call).
+Only few properties are defined by framework, in most cases you have to define properties on your own. Only setters need to be defined, in XS Framework there is no concept of getters, but you can obtain the last set value of ther property by calling `xs.prop('name')` (single argument call).
 
 ### Defining element properties
 You can define setter for the specific id:
@@ -82,8 +82,8 @@ The last two arguments are:
 
 Thanks to them the setter has ability to determine if the current element is first or last and take specific actions for the first/last element.
 
-### Defining general properties
-The definition of the setter for general property is a bit similar to the case of the setter for element property, but the second argument is the key (aka name) of the property, not an DOM element:
+### Defining plain properties
+The definition of the setter for plain property is a bit similar to the case of the setter for element property, but the second argument is the key (aka name) of the property, not an DOM element:
 ```javascript
  xs.define('totalSum', function(xs, key, value) {
      var element = xs.MessageDiv; //yes, this is the abbreviation of document.getElementById('MessageDiv')
@@ -91,3 +91,6 @@ The definition of the setter for general property is a bit similar to the case o
      element.innerText = 'The sum is: ' + value.toString();
  });
 ```
+
+### Defining several properties with the same setter function
+
