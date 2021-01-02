@@ -5,7 +5,7 @@ An JavaScript microframework for IE >= 9 and all modern browsers. No additional 
 ## Licence
 Public Domain, Unlicense (https://choosealicense.com/licenses/unlicense/), WTFPL (http://www.wtfpl.net/)
 
-## Basic concepts
+# Basic concepts
 
 Creating new instance of framework object:
 
@@ -49,7 +49,7 @@ Moreover, the framework allows you to define properties. There are three kinds o
 ```
 
 
-## Defining properties
+# Defining properties
 
 Only few properties are defined by framework, in most cases you have to define properties on your own. Only setters need to be defined, in XS Framework there is no concept of getters, but you can obtain the last set value of ther property by calling `xs.prop('name')` (single argument call).
 

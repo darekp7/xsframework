@@ -69,6 +69,70 @@ function newXtraSmallFramework(bCreateElementsList) {
             res = arguments[i](res);
         return res;
     }
+    
+    function query(qs) {
+        if (!qs || !qs.from || qs.where === false)
+            return [];
+      
+        function iterate(action) {
+            var x = qs.from;
+            var where = (!qs.where || qs.where === true)? function (item, key, x, i) { return true; } : qs.where;
+            var i = 0;
+            if (qs.distinctBy) {
+                var found = {};
+                each(x, function(item, key) {
+                    var k2 = qs.distinctBy(item);
+                    if (where(item, key, x, i) && found[k2] !== true) {
+                        action(item, key, x, i++);
+                        found[k2] = true;
+                    }
+                });
+            } else {
+                each(x, function(item, key) {
+                    if (where(item, key, x, i))
+                        action(item, key, x, i++);
+                });
+            }
+        }
+        
+        var sel = qs.select || function(item, key, x, i) { return item; };
+        if (typeof sel === 'function') {
+            var res = [];
+            iterate(function(item, key, x, i) { res.push(sel(item, key, x, i)); });
+            return res;
+        } else if (typeof qs.select === "string") {
+            switch(qs.select.substring(0,3).toUpperCase()) {
+                case "COU": // "count"
+                    var res = 0;
+                    iterate(function(item, key, x, i) { res++; });
+                    return res;
+                case "MIN": // "min"
+                    var res = undefined;
+                    iterate(function(item, key, x, i) {
+                        if (res === undefined || res > item)
+                            res = item;
+                    });
+                    return res;
+                case "MAX": // "max"
+                    var res = undefined;
+                    iterate(function(item, key, x, i) {
+                        if (res === undefined || res < item)
+                            res = item;
+                    });
+                    return res;
+                case "SUM": // "sum"
+                    var res = 0;
+                    iterate(function(item, key, x, i) { res += item; });
+                    return res;
+                default:
+                    console.error("'select' must be assigned to a function or one of: 'count', 'min', 'max', 'sum'.");
+                    return [];
+            }
+        } else {
+            console.error("'select' must be assigned to a function or one of: 'count', 'min', 'max', 'sum'.");
+            return [];
+        }
+    }
 
     function isElementPropertyName(str) {
         // element property name format: "#ident.property"
@@ -242,10 +306,11 @@ function newXtraSmallFramework(bCreateElementsList) {
     xs.etc.updateElementsList = updateElementsList;
     xs.etc.isIdentifier = isIdentifier;
     xs.etc.strReplaceAll = strReplaceAll;
-    xs.etc.pipe = pipe;
     xs.etc.isElementPropertyName = isElementPropertyName;
     xs.etc.get_IE_version = get_IE_version;
     xs.etc.get_Edge_version = get_Edge_version;
+    xs.etc.pipe = pipe;
+    xs.etc.query = query;
 
     each(xs, function(v, k) {  // reserverd ids are sorted in order to avoid of ambiguity
         for(var i=0; i < xs.etc.reservedIds.length; i++) {
